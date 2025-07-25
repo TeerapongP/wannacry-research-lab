@@ -126,6 +126,7 @@ def simulate_propagation(target_ips):
 # --- Main Program ---
 
 def main():
+    
     print("=== WannaCry PoC Full Simulator ===")
 
     if len(sys.argv) < 4:
@@ -155,8 +156,7 @@ def main():
     show_ransom_note()
 
     # Step 5: Simulate propagation to some IPs (hardcoded or could be extended)
-    fake_ips = ['192.168.1.10', '192.168.1.15', '192.168.1.20']
-    simulate_propagation(fake_ips)
+    simulate_propagation(target_ip)
 
 if __name__ == "__main__":
     main()
