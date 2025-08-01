@@ -126,38 +126,63 @@ def simulate_propagation(target_ips):
 # --- Main Program ---
 
 def main():
-    
     print("=== WannaCry PoC Full Simulator ===")
 
-    if len(sys.argv) < 4:
-        print("Usage: python wannacry_poc_full.py <target_folder> <kill_switch_domain> <target_ip_to_scan>")
-        sys.exit(1)
+    # Hardcoded input values (you can still change these if needed)
+    target_folder = r"C:\Users\testlab\Desktop\test1"
+    kill_switch_domain = "examplekillswitch.com"
+    target_ip = "192.168.153.128"
 
-    target_folder = sys.argv[1]
-    kill_switch_domain = sys.argv[2]
-    target_ip = sys.argv[3]
+    while True:
+        print("\n--- Simulation Menu ---")
+        print(f"Target Folder: {target_folder}")
+        print(f"Kill-Switch Domain: {kill_switch_domain}")
+        print(f"Target IP: {target_ip}")
+        print("------------------------")
+        print("1. Scan target IP for SMBv1 (MS17-010)")
+        print("2. Check kill-switch domain")
+        print("3. Simulate AES file encryption")
+        print("4. Show ransomware popup note")
+        print("5. Simulate propagation")
+        print("6. Run full simulation")
+        print("0. Exit")
+        
+        choice = input("Enter your choice (0-6): ").strip()
 
-    # Step 1: Scan target IP for SMB vulnerability
-    scan_target(target_ip)
+        if choice == "1":
+            scan_target(target_ip)
 
-    # Step 2: Check kill-switch domain
-    if check_kill_switch(kill_switch_domain):
-        print("[!] Kill-Switch Activated. Simulation Aborted.")
-        logging.info("Simulation aborted due to active kill-switch.")
-        return
-    else:
-        print("[!] Kill-Switch Not Active. Proceeding with Simulation...")
-        logging.info("Kill-switch not active. Continuing simulation.")
+        elif choice == "2":
+            check_kill_switch(kill_switch_domain)
 
-    # Step 3: Simulate encryption on files
-    simulate_encryption(target_folder)
+        elif choice == "3":
+            simulate_encryption(target_folder)
 
-    # Step 4: Show ransom note popup
-    show_ransom_note()
+        elif choice == "4":
+            show_ransom_note()
 
-    # Step 5: Simulate propagation to some IPs (hardcoded or could be extended)
-    simulate_propagation(target_ip)
+        elif choice == "5":
+            simulate_propagation([target_ip])
+
+        elif choice == "6":
+            scan_target(target_ip)
+            if check_kill_switch(kill_switch_domain):
+                print("[!] Kill-Switch Activated. Simulation Aborted.")
+                logging.info("Simulation aborted due to active kill-switch.")
+            else:
+                print("[!] Kill-Switch Not Active. Proceeding with Simulation...")
+                logging.info("Kill-switch not active. Continuing simulation.")
+                simulate_encryption(target_folder)
+                show_ransom_note()
+                simulate_propagation([target_ip])
+
+        elif choice == "0":
+            print("Exiting simulation.")
+            break
+
+        else:
+            print("Invalid choice. Please enter a number from 0 to 6.")
+
 
 if __name__ == "__main__":
     main()
-
